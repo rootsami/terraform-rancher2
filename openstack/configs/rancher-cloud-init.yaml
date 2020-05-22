@@ -1,0 +1,51 @@
+#cloud-config
+groups:
+  - docker
+
+users:
+- default
+- name: rancher
+  lock_passwd: true
+  shell: /bin/bash
+  ssh-authorized-keys:
+    - ${ssh_public_key}
+  groups: [docker]
+  sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+
+
+packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg-agent
+  - software-properties-common
+
+write_files:
+- content: |-
+    [Unit]
+    Description=rancher-server as a service
+    Requires=docker.service
+    After=docker.service
+
+    [Service]
+    Restart=on-failure
+    RestartSec=10
+    ExecStart=/usr/bin/docker run --name %p --rm -p 80:80 -p 443:443 -v /opt/rancher:/var/lib/rancher rancher/rancher:${rancher_version}
+    ExecStop=-/usr/bin/docker stop -t 2 %p
+
+    [Install]
+    WantedBy=multi-user.target
+  owner: root:root
+  path: /etc/systemd/system/rancher.service
+  permissions: '0644'
+
+runcmd:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - apt-get update -y
+  - apt-get install -y docker-ce docker-ce-cli containerd.io
+  - systemctl daemon-reload
+  - systemctl enable docker --now
+  - systemctl enable rancher --now
+
+final_message: "The system is finally up, after $UPTIME seconds"
