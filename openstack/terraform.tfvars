@@ -12,7 +12,7 @@ rancher_node_image_id = "ed260692-db71-4be7-9283-0999ce828ff7" ## f99bb6f7-658d-
 # Count of agent nodes with role master (controlplane,etcd)
 count_master = "1"
 # Count of agent nodes with role worker
-count_worker_nodes = "3"
+count_worker_nodes = "2"
 # Resources will be prefixed with this to avoid clashing names
 prefix = "demo"
 

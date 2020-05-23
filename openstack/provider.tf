@@ -19,7 +19,7 @@ variable "openstack_domain" {
   description = "Openstack domain name which tenant exists on"
 }
 
-
+# Openstack provider to communicate with openstack apis
 provider "openstack" {
   user_name   = var.openstack_username
   tenant_name = var.openstack_project

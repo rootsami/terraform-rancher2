@@ -1,10 +1,10 @@
-
+# Creating Openstack security groups
 resource "openstack_networking_secgroup_v2" "demo_secgroup" {
   name        = "demo"
   description = "demo security group"
 }
 
-
+# Creating Openstack security group rule for https 443
 resource "openstack_networking_secgroup_rule_v2" "https" {
   direction         = "ingress"
   ethertype         = "IPv4"
@@ -15,6 +15,7 @@ resource "openstack_networking_secgroup_rule_v2" "https" {
   depends_on        = [openstack_networking_secgroup_v2.demo_secgroup]
 }
 
+# Creating Openstack security group rule for ssh 22
 resource "openstack_networking_secgroup_rule_v2" "ssh" {
   direction         = "ingress"
   ethertype         = "IPv4"
@@ -25,6 +26,7 @@ resource "openstack_networking_secgroup_rule_v2" "ssh" {
   depends_on        = [openstack_networking_secgroup_v2.demo_secgroup]
 }
 
+# Creating Openstack security group rule for all ports in same security group tcp
 resource "openstack_networking_secgroup_rule_v2" "same_secgroup_ingress_tcp" {
   direction         = "ingress"
   ethertype         = "IPv4"
@@ -34,6 +36,7 @@ resource "openstack_networking_secgroup_rule_v2" "same_secgroup_ingress_tcp" {
   depends_on        = [openstack_networking_secgroup_v2.demo_secgroup]
 }
 
+# Creating Openstack security group rule for all ports in same security group udp
 resource "openstack_networking_secgroup_rule_v2" "same_secgroup_ingress_udp" {
   direction         = "ingress"
   ethertype         = "IPv4"
