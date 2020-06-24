@@ -39,10 +39,10 @@ Up to this point, use the `rancher_url` from above output and login to rancher i
 
 ## Integration with [cloud-provider-openstack](https://github.com/kubernetes/cloud-provider-openstack)
 As you may notice, that all the nodes have a taint `node.cloudprovider.kubernetes.io/uninitialized`. The usage of `--cloud-provider=external` flag to the kubelet makes it waiting for the clouder-provider to start the initialization.
-* Edit the file `manifests/cloud-config` with the access information to your openstack environment.
+* Edit the file `manifests/cloud.conf` with the access information to your openstack environment.
 * Create a secret containing the cloud configuration in the kube-system namespace 
 ```bash
-kubectl create secret -n kube-system generic cloud-config --from-file=manifests/cloud-config
+kubectl create secret -n kube-system generic cloud-config --from-file=manifests/cloud.conf
 ```
 * Create RBAC resources and openstack-cloud-controller-manager deamonset and wait for all the pods in kube-system namespace up and running.
 ```bash
