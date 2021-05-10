@@ -30,7 +30,7 @@ write_files:
     [Service]
     Restart=on-failure
     RestartSec=10
-    ExecStart=/usr/bin/docker run --name %p --rm -p 80:80 -p 443:443 -v /opt/rancher:/var/lib/rancher rancher/rancher:${rancher_version}
+    ExecStart=/usr/bin/docker run --name %p --rm --privileged -p 80:80 -p 443:443 -v /opt/rancher:/var/lib/rancher rancher/rancher:${rancher_version}
     ExecStop=-/usr/bin/docker stop -t 2 %p
 
     [Install]
