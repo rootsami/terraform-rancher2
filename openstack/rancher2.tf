@@ -26,13 +26,13 @@ resource "null_resource" "wait_for_rancher" {
   provisioner "local-exec" {
     command    = "until $(curl --output /dev/null --silent --head --insecure --fail https://${openstack_networking_floatingip_v2.rancher_server_ip.address}); do sleep 5 ;done"
   }
-  depends_on = [openstack_compute_floatingip_associate_v2.rancher_server_ip_attach]
+  depends_on = [openstack_compute_floatingip_associate_v2.rancher_server_ip_attach,openstack_networking_secgroup_rule_v2.https]
 
 }
 
 # Creating Rancher2 demo cluster with rke configs
 resource "rancher2_cluster" "demo" {
-  provider                  = "rancher2.admin"
+  provider                  = rancher2.admin
   name                      = var.cluster_name
   description               = "${var.prefix} rancher2 rke cluster"
   enable_cluster_monitoring = true
