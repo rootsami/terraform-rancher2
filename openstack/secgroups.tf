@@ -1,6 +1,6 @@
 # Creating Openstack security groups
 resource "openstack_networking_secgroup_v2" "demo_secgroup" {
-  name        = "demo"
+  name        = "${var.prefix}-demo"
   description = "demo security group"
 }
 

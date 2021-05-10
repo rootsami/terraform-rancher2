@@ -47,6 +47,10 @@ resource "openstack_compute_instance_v2" "rancher_server" {
   key_pair        = openstack_compute_keypair_v2.demo_keypair.name
   security_groups = [openstack_networking_secgroup_v2.demo_secgroup.name]
   user_data       = data.template_file.cloud-config-rancher.rendered
+  metadata            = {
+    clustername="${var.cluster_name}"
+    type="provisioner"
+    } 
 
 # Booting from volumes, as some cloud-providers do not allow booting from image
   block_device {
@@ -80,6 +84,10 @@ resource "openstack_compute_instance_v2" "rancher_master" {
   key_pair        = openstack_compute_keypair_v2.demo_keypair.name
   security_groups = [openstack_networking_secgroup_v2.demo_secgroup.name]
   user_data       = data.template_file.cloud-config-master.rendered
+  metadata            = {
+    clustername="${var.cluster_name}"
+    type="master"
+    }
 
 # Booting from volumes, as some cloud-providers do not allow booting from image
   block_device {
@@ -113,6 +121,10 @@ resource "openstack_compute_instance_v2" "rancher_worker" {
   key_pair        = openstack_compute_keypair_v2.demo_keypair.name
   security_groups = [openstack_networking_secgroup_v2.demo_secgroup.name]
   user_data       = data.template_file.cloud-config-worker.rendered
+    metadata            = {
+    clustername="${var.cluster_name}"
+    type="worker"
+    }
 
 # Booting from volumes, as some cloud-providers do not allow booting from image
   block_device {
